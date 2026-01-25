@@ -8,8 +8,6 @@ public class CharControl : NetworkBehaviour
     [SerializeField] private InputReader _InputReader;
     [SerializeField] private float _Speed;
     [SerializeField] private Transform _CameraTransform;
-    [SerializeField] private CinemachineCamera _VirtualCamera;
-    [SerializeField] private AudioListener _AudioListener;
 
 
 
@@ -27,7 +25,7 @@ public class CharControl : NetworkBehaviour
         Debug.LogError("InputReader is NOT assigned!");
         return;
     }
-
+    
     _InputReader.EnableInput();
     _InputReader.MoveEvent += OnMove;
 }
@@ -41,22 +39,6 @@ public override void OnNetworkDespawn()
     _InputReader.DisableInput();
 }
 
-private void VRCamera()
-{
-    if (!IsOwner)
-        {
-            _AudioListener.enabled = true;
-            _VirtualCamera.Priority = 1;
-        }
-        else
-            {
-               
-                _VirtualCamera.Priority = 0;
-            }
-
-    _VirtualCamera.Follow = transform;
-    _VirtualCamera.LookAt = transform;
-}
 
     // private void OnDestroy()
     // {
@@ -85,6 +67,7 @@ private void VRCamera()
     {
         MoveServerRpc(moveInput);
     }
+
     private void RotateToCamera()
 {
     Vector3 camForward = _CameraTransform.forward;
@@ -95,21 +78,28 @@ private void VRCamera()
 
     transform.forward = camForward;
 }
+//     private void RotateToCamera()
+// {
+//     Vector3 camForward = _CameraTransform.forward;
+//     camForward.y = 0f;
 
-    [ServerRpc]
-    private void MoveServerRpc(Vector2 input)
-    {
-    
-        Vector3 forward = transform.forward;
-        Vector3 right = transform.right;
+//     if (camForward.sqrMagnitude < 0.001f)
+//         return;
 
-        forward.y = 0;
-        right.y = 0;
+//     transform.forward = camForward;
+// }
 
-        Vector3 direction =
-            forward * input.y +
-            right * input.x;
+ 
+   [ServerRpc]
+private void MoveServerRpc(Vector2 input)
+{
+    Vector3 forward = transform.forward;
+    Vector3 right = transform.right;
 
-        transform.position += direction * _Speed * Time.deltaTime;
-    }
+    forward.y = 0;
+    right.y = 0;
+
+    Vector3 direction = forward * input.y + right * input.x;
+    transform.position += direction * _Speed * Time.deltaTime;
+}
 }
