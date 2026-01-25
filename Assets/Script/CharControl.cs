@@ -1,11 +1,17 @@
-using System.Data.Common;
-using Unity.Netcode;
 using UnityEngine;
+using Unity.Cinemachine;
+using Unity.Netcode;
+
 
 public class CharControl : NetworkBehaviour
 {
-    [SerializeField] private InputReader inputReader;
-    [SerializeField] private float speed;
+    [SerializeField] private InputReader _InputReader;
+    [SerializeField] private float _Speed;
+    [SerializeField] private Transform _CameraTransform;
+    [SerializeField] private CinemachineCamera _VirtualCamera;
+    [SerializeField] private AudioListener _AudioListener;
+
+
 
     private Vector2 moveInput;
 
@@ -16,14 +22,14 @@ public class CharControl : NetworkBehaviour
     if (!IsOwner)
         return;
 
-    if (inputReader == null)
+    if (_InputReader == null)
     {
         Debug.LogError("InputReader is NOT assigned!");
         return;
     }
 
-    inputReader.EnableInput();
-    inputReader.MoveEvent += OnMove;
+    _InputReader.EnableInput();
+    _InputReader.MoveEvent += OnMove;
 }
 
 public override void OnNetworkDespawn()
@@ -31,8 +37,25 @@ public override void OnNetworkDespawn()
     if (!IsOwner)
         return;
 
-    inputReader.MoveEvent -= OnMove;
-    inputReader.DisableInput();
+    _InputReader.MoveEvent -= OnMove;
+    _InputReader.DisableInput();
+}
+
+private void VRCamera()
+{
+    if (!IsOwner)
+        {
+            _AudioListener.enabled = true;
+            _VirtualCamera.Priority = 1;
+        }
+        else
+            {
+               
+                _VirtualCamera.Priority = 0;
+            }
+
+    _VirtualCamera.Follow = transform;
+    _VirtualCamera.LookAt = transform;
 }
 
     // private void OnDestroy()
@@ -50,17 +73,28 @@ public override void OnNetworkDespawn()
 }
 
     private void Update()
-    {
-        if (!IsOwner)
-            return;
+{
+    if (!IsOwner)
+        return;
 
-        SendMoveToServer();
-    }
+    RotateToCamera();
+    SendMoveToServer();
+}
 
     private void SendMoveToServer()
     {
         MoveServerRpc(moveInput);
     }
+    private void RotateToCamera()
+{
+    Vector3 camForward = _CameraTransform.forward;
+    camForward.y = 0f;
+
+    if (camForward.sqrMagnitude < 0.001f)
+        return;
+
+    transform.forward = camForward;
+}
 
     [ServerRpc]
     private void MoveServerRpc(Vector2 input)
@@ -76,6 +110,6 @@ public override void OnNetworkDespawn()
             forward * input.y +
             right * input.x;
 
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * _Speed * Time.deltaTime;
     }
 }
