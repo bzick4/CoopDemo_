@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 2918370892374824846}
   - component: {fileID: 7908623954513379571}
   - component: {fileID: -1836993953620520391}
+  - component: {fileID: 2041195577400354569}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -109,24 +110,24 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkTransformExpanded: 0
   AutoOwnerAuthorityTickOffset: 1
-  PositionInterpolationType: 0
-  RotationInterpolationType: 0
+  PositionInterpolationType: 2
+  RotationInterpolationType: 2
   ScaleInterpolationType: 0
   PositionLerpSmoothing: 1
   PositionMaxInterpolationTime: 0.1
-  RotationLerpSmoothing: 1
+  RotationLerpSmoothing: 0
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
+  AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
-  SyncPositionX: 1
+  SyncPositionX: 0
   SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 0
+  SyncPositionZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 1
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -139,7 +140,7 @@ MonoBehaviour:
   InLocalSpace: 0
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
-  SlerpPosition: 0
+  SlerpPosition: 1
 --- !u!114 &2562711179982759544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,10 +154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  visuals:
-  - {fileID: 2730034565435109854, guid: 2b15e27b34ddd4feeafb1427c2a81e13, type: 3}
-  - {fileID: 1632936005667035624, guid: 65b85aec9fa234dd083b4756ff7e5e11, type: 3}
-  - {fileID: 773364696903191086, guid: 76b933e75fa1445a39567231fe376d39, type: 3}
+  characters:
+  - {fileID: 11400000, guid: 46d3eefdb92954e62b3e7a146fd1860c, type: 2}
+  - {fileID: 11400000, guid: defb600eaf3864d598fae1b7c1b9a66a, type: 2}
+  - {fileID: 11400000, guid: 00b0a7fbf307d475a8bfc7961a81d8f7, type: 2}
   visualRoot: {fileID: 177539986931292872}
 --- !u!114 &2918370892374824846
 MonoBehaviour:
@@ -184,8 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   _InputReader: {fileID: 2918370892374824846}
-  _Speed: 5
-  _CameraTransform: {fileID: 8081089577567563281}
 --- !u!114 &-1836993953620520391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,3 +200,22 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _CameraPrefab: {fileID: 4775090656801798037, guid: 73ceb025523d74ca38d3606fea88f20a, type: 3}
   _CameraTarget: {fileID: 8081089577567563281}
+--- !u!114 &2041195577400354569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3220210841526747289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f85f11dfba24686886a56437186e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  Health:
+    m_InternalValue: 0
+  Mana:
+    m_InternalValue: 0
+  Stamina:
+    m_InternalValue: 0
