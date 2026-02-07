@@ -52,12 +52,13 @@
 
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 
 public class PlayerVisual : NetworkBehaviour
 {
     [SerializeField] private SOData[] characters;
     [SerializeField] private Transform visualRoot;
-
+   
     private NetworkVariable<int> characterIndex =
         new NetworkVariable<int>(
             -1,
@@ -85,7 +86,30 @@ public class PlayerVisual : NetworkBehaviour
     private void OnCharacterChanged(int oldIndex, int newIndex)
     {
         ApplyCharacter(newIndex);
+        //AssignDeepAnimator();
     }
+
+    // public void AssignDeepAnimator()
+    // {
+    //     if (_NetworkAnimator == null)
+    //     {
+    //         Debug.LogError("NetworkAnimator не назначен!");
+    //         return;
+    //     }
+
+    //     // Находим Animator глубоко в дочерних объектах
+    //     Animator animator = GetComponentInChildren<Animator>();
+    //     if (animator == null)
+    //     {
+    //         Debug.LogError("Animator не найден в дочерних объектах!");
+    //         return;
+    //     }
+
+    //     _NetworkAnimator.Animator = animator;
+
+    //     Debug.Log("Animator успешно назначен для NetworkAnimator: " + animator.name);
+    // }
+
 
     private void ApplyCharacter(int index)
     {
