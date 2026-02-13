@@ -6,6 +6,7 @@ public class SOData : ScriptableObject
 
     [Header("Visual")]
     public GameObject VisualPrefab;
+    public int AttackType;
    
 
     [Header("Player Stats")]

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Warrior
   m_EditorClassIdentifier: 
   VisualPrefab: {fileID: 129185363854112123, guid: 3d74007a3b9aa4a4980767d84a8253ef, type: 3}
+  AttackType: 2
   MaxHealth: 200
   MaxStamina: 100
   MaxManna: 0

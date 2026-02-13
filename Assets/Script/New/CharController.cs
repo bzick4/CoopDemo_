@@ -1,80 +1,4 @@
-// using UnityEngine;
-// using Unity.Netcode;
-// using System.Collections;
 
-// public class CharController : NetworkBehaviour
-// {
-//     public float walkSpeed = 5f;
-//     public float runSpeed = 10f;
-
-//     private bool _isRunning;
-//     private Vector3 _moveInput;
-//     private Animator _animator;
-
-//     // Синхронизация позиции и blend
-//     private NetworkVariable<Vector3> netPosition = new NetworkVariable<Vector3>();
-//     private NetworkVariable<float> netBlend = new NetworkVariable<float>();
-
-//     public override void OnNetworkSpawn()
-//     {
-//         base.OnNetworkSpawn();
-//         _animator = GetComponent<Animator>();
-//         StartCoroutine(InitAnimator());
-//         netBlend.OnValueChanged += (oldVal, newVal) =>
-//         {
-//             if (_animator != null)
-//                 _animator.SetFloat("Blend", newVal, 0.1f, Time.deltaTime);
-//         };
-//     }
-
-//     private IEnumerator InitAnimator()
-//     {
-//         yield return null; // ждём спавна визуала
-//         if (_animator != null)
-//         {
-//             var controller = _animator.runtimeAnimatorController;
-//             _animator.runtimeAnimatorController = null;
-//             _animator.runtimeAnimatorController = controller;
-//             _animator.Rebind();
-//             _animator.Update(0f);
-//         }
-//     }
-
-//     private void Update()
-//     {
-//         if (!IsOwner) return;
-
-//         _isRunning = Input.GetKey(KeyCode.LeftShift);
-
-//         float h = Input.GetAxis("Horizontal");
-//         float v = Input.GetAxis("Vertical");
-
-//         _moveInput = new Vector3(h, 0f, v);
-//         Vector3 move = _moveInput * (_isRunning ? runSpeed : walkSpeed) * Time.deltaTime;
-//         transform.position += move;
-
-//         // Реплицируем позицию и blend
-//         netPosition.Value = transform.position;
-//         float blend = _moveInput.magnitude > 0.01f ? (_isRunning ? 2f : 1f) : 0f;
-//         netBlend.Value = blend;
-//     }
-
-//     private void LateUpdate()
-//     {
-//         if (!IsOwner)
-//         {
-//             // Для чужих игроков обновляем позицию через сеть
-//             transform.position = netPosition.Value;
-//         }
-
-//         if (_animator != null && IsOwner)
-//         {
-//             _animator.SetFloat("Blend", netBlend.Value, 0.1f, Time.deltaTime);
-//         }
-//     }
-// }
-
-// 
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
@@ -135,6 +59,7 @@ public class CharController : NetworkBehaviour
     private void InitAnimator(Animator animator)
     {
         _animator = animator;
+
         if (_animator == null)
         {
             Debug.LogError("Animator not found on root!");
@@ -149,6 +74,12 @@ public class CharController : NetworkBehaviour
 
         _animator.SetFloat("Blend", netBlend.Value, 0.1f, Time.deltaTime);
         Debug.Log("Animator initialized on root after visual spawn");
+
+        PlayerAttack attack = GetComponent<PlayerAttack>();
+        if (attack != null)
+        {
+            attack.SetAnimator(_animator);
+        }
     }
 
     // private void Update()
@@ -237,9 +168,6 @@ public class CharController : NetworkBehaviour
     {
         _animator.SetFloat("Blend", currentBlend, 0.1f, Time.deltaTime);
     }
-
-    // ... остальной код движения (по камере) ...
-
 
     // Движение (твой текущий код с камерой)
     if (_moveInput.sqrMagnitude >= 0.01f)

@@ -229,6 +229,14 @@ public override void OnNetworkSpawn()
     ApplyVisual(index);
 }
 
+public int GetAttackType()
+{
+    if (visualIndex.Value < 0) return 0;
+    Debug.Log($"Visual {visualIndex.Value} | AttackType = {visualOptions[visualIndex.Value].AttackType}");
+    return visualOptions[visualIndex.Value].AttackType;
+   
+}
+
 private void ApplyVisual(int index)
 {
     Debug.Log($"ApplyVisual вызван на { (IsOwner ? "owner" : "remote") } | index = {index} | prefab = {visualOptions[index]?.name}");

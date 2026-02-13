@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Rogue
   m_EditorClassIdentifier: 
   VisualPrefab: {fileID: 6165370679642834771, guid: 695db3c46c5724e8b862e666d222595c, type: 3}
+  AttackType: 1
   MaxHealth: 100
   MaxStamina: 200
   MaxManna: 0

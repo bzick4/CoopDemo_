@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wizard
   m_EditorClassIdentifier: 
   VisualPrefab: {fileID: 946745461641910506, guid: 5860e4c2925184e23b48702a2e0ba7fc, type: 3}
+  AttackType: 3
   MaxHealth: 100
   MaxStamina: 0
   MaxManna: 200
