@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7abf15098a143ceb540dbaeb941a70, type: 3}
   m_Name: Wizard
   m_EditorClassIdentifier: 
-  VisualPrefab: {fileID: 2972733264000451855, guid: 041aa8c3ebeff4db1946212ac690a67c, type: 3}
+  VisualPrefab: {fileID: 946745461641910506, guid: 5860e4c2925184e23b48702a2e0ba7fc, type: 3}
   MaxHealth: 100
   MaxStamina: 0
   MaxManna: 200

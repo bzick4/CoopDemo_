@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7abf15098a143ceb540dbaeb941a70, type: 3}
   m_Name: Rogue
   m_EditorClassIdentifier: 
-  VisualPrefab: {fileID: 2568111134010062909, guid: 11a2fe272a95a45d08ced644048e1bf4, type: 3}
+  VisualPrefab: {fileID: 6165370679642834771, guid: 695db3c46c5724e8b862e666d222595c, type: 3}
   MaxHealth: 100
   MaxStamina: 200
   MaxManna: 0
