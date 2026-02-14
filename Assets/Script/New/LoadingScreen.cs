@@ -50,7 +50,7 @@ public class LoadingScreen : MonoBehaviour
 
         if (statusText != null)
         {
-            statusText.text = playerReady ? "Готово!" : "Ожидание спавна персонажа...";
+            statusText.text = playerReady ? "Готово!" : "Loading...";
         }
     }
 
