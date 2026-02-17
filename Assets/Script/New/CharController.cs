@@ -169,7 +169,7 @@ public class CharController : NetworkBehaviour
         _animator.SetFloat("Blend", currentBlend, 0.1f, Time.deltaTime);
     }
 
-    // Движение (твой текущий код с камерой)
+    
     if (_moveInput.sqrMagnitude >= 0.01f)
     {
         Vector3 camForward = GetCameraForward();

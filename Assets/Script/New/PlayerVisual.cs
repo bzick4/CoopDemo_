@@ -130,7 +130,7 @@ public class PlayerVisual : NetworkBehaviour
 {
     [Header("Визуалы")]
     public SOData[] visualOptions;
-    private GameObject currentVisual;
+    public GameObject currentVisual { get; private set; }
 
     // private NetworkVariable<int> visualIndex = new NetworkVariable<int>(
     //     -1,

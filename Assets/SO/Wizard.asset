@@ -19,4 +19,3 @@ MonoBehaviour:
   MaxManna: 200
   WalkSpeed: 3
   RunSpeed: 5
-  CharacterName: Wizard

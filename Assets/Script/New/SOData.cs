@@ -19,5 +19,16 @@ public class SOData : ScriptableObject
     public float WalkSpeed;
     public float RunSpeed;
 
-    public string CharacterName;
+    // [Header("Атака")]
+    // public PlayerAttackType PlayerAttack = PlayerAttackType.Melee;  // тип атаки
+    // public float Damage = 25f;                        // урон
+    // public float AttackRange = 2f;                    // дальность (для ближней)
+    // public float ProjectileSpeed = 10f;               // скорость для дальнего
+    // public GameObject ProjectilePrefab;               // префаб проектайла (для дальнего)
+
+    // public enum PlayerAttackType
+    // {
+    // Melee,      // ближняя (hitbox)
+    // Ranged      // дальняя (проектайл)
+    // }
 }
