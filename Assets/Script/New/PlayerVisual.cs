@@ -129,15 +129,15 @@ using System.Collections;
 public class PlayerVisual : NetworkBehaviour
 {
     [Header("Визуалы")]
-    public SOData[] visualOptions;
-    public GameObject currentVisual { get; private set; }
+    public SOData[] VisualOptions;
+    public GameObject CurrentVisual { get; private set; }
 
     // private NetworkVariable<int> visualIndex = new NetworkVariable<int>(
     //     -1,
     //     NetworkVariableReadPermission.Everyone,
     //     NetworkVariableWritePermission.Owner
     // );
-    private NetworkVariable<int> visualIndex = new NetworkVariable<int>(
+    private NetworkVariable<int> _visualIndex = new NetworkVariable<int>(
     -1,
     NetworkVariableReadPermission.Everyone,
     NetworkVariableWritePermission.Server  // ← меняем на Server!
@@ -145,49 +145,25 @@ public class PlayerVisual : NetworkBehaviour
 
     public event Action<Animator> OnVisualReady;
 
-//    public override void OnNetworkSpawn()
-// {
-//     base.OnNetworkSpawn();
-//     Debug.LogWarning($"!!! OnNetworkSpawn CALLED on {gameObject.name} | IsSpawned: {IsSpawned} | IsOwner: {IsOwner} | OwnerClientId: {OwnerClientId} | LocalClientId: {NetworkManager.Singleton.LocalClientId} | IsHost: {IsHost} | IsClient: {IsClient}");
-
-//     visualIndex.OnValueChanged += OnVisualChanged;
-
-//     if (IsOwner)
-//     {
-//         var manager = PlayerVisualManagerNetcode.Instance;
-//         if (manager == null)
-//             Debug.LogError("Manager INSTANCE NULL!");
-//         else
-//         {
-//             manager.RegisterPlayerVisual(this);
-//             Debug.Log("!!! Registration SUCCESS");
-//         }
-//     }
-//     else
-//     {
-//         Debug.Log("Not owner, skipping registration");
-//     }
-// }
 public override void OnNetworkSpawn()
 {
     base.OnNetworkSpawn();
 
-    Debug.Log($"OnNetworkSpawn | visualIndex = {visualIndex.Value}");
+    Debug.Log($"OnNetworkSpawn | visualIndex = {_visualIndex.Value}");
 
-    visualIndex.OnValueChanged += OnVisualChanged;
+    _visualIndex.OnValueChanged += OnVisualChanged;
 
     if (IsOwner)
         PlayerVisualManagerNetcode.Instance?.RegisterPlayerVisual(this);
 
     // ← Ключевой фикс: применяем текущий визуал сразу при спавне
-    if (visualIndex.Value >= 0)
+    if (_visualIndex.Value >= 0)
     {
-        Debug.Log($"Initial apply visual {visualIndex.Value} on spawn");
-        ApplyVisual(visualIndex.Value);
+        Debug.Log($"Initial apply visual {_visualIndex.Value} on spawn");
+        ApplyVisual(_visualIndex.Value);
     }
 }
-
-    // Кнопки вызывают этот метод
+   
     public void RequestSetVisual(int index)
     {
         if (!IsOwner) return;
@@ -197,9 +173,9 @@ public override void OnNetworkSpawn()
     [ServerRpc]
     public void SetVisualServerRpc(int index)
     {
-        if (index < 0 || index >= visualOptions.Length) return;
+        if (index < 0 || index >= VisualOptions.Length) return;
         
-        visualIndex.Value = index;
+        _visualIndex.Value = index;
     }
 
     private void OnVisualChanged(int oldVal, int newVal)
@@ -231,33 +207,31 @@ public override void OnNetworkSpawn()
 
 public int GetAttackType()
 {
-    if (visualIndex.Value < 0) return 0;
-   Debug.Log($"Visual {visualIndex.Value} | AttackType = {visualOptions[visualIndex.Value].AttackType}");
-    return visualOptions[visualIndex.Value].AttackType;
+    if (_visualIndex.Value < 0) return 0;
+   Debug.Log($"Visual {_visualIndex.Value} | AttackType = {VisualOptions[_visualIndex.Value].AttackType}");
+    return VisualOptions[_visualIndex.Value].AttackType;
 }
 
 private void ApplyVisual(int index)
 {
-    Debug.Log($"ApplyVisual вызван на { (IsOwner ? "owner" : "remote") } | index = {index} | prefab = {visualOptions[index]?.name}");
-    if (currentVisual != null)
-        Destroy(currentVisual);
+    Debug.Log($"ApplyVisual вызван на { (IsOwner ? "owner" : "remote") } | index = {index} | prefab = {VisualOptions[index]?.name}");
+    if (CurrentVisual != null)
+        Destroy(CurrentVisual);
 
-    if (index < 0 || index >= visualOptions.Length) return;
+    if (index < 0 || index >= VisualOptions.Length) return;
 
-    GameObject prefab = visualOptions[index].VisualPrefab;
+    GameObject prefab = VisualOptions[index].VisualPrefab;
     if (prefab == null) return;
 
-    currentVisual = Instantiate(prefab, transform);
-    currentVisual.transform.localPosition = Vector3.zero;
-    currentVisual.transform.localRotation = Quaternion.identity;
-    currentVisual.transform.localScale = Vector3.one;
+    CurrentVisual = Instantiate(prefab, transform);
+    CurrentVisual.transform.localPosition = Vector3.zero;
+    CurrentVisual.transform.localRotation = Quaternion.identity;
+    CurrentVisual.transform.localScale = Vector3.one;
 
-    // Больше НЕ ищем Animator здесь — он на root (this.gameObject)
-    // Но можно принудительно "переподключить" модель к Animator (иногда нужно)
-    Animator animator = GetComponent<Animator>();  // на пустышке
+    
+    Animator animator = GetComponent<Animator>();  
     if (animator != null && animator.avatar == null)
     {
-        // Если Avatar потерялся — можно попробовать взять из модели, но обычно не нужно
         Debug.LogWarning("Animator on root has no Avatar!");
     }
 
@@ -272,6 +246,8 @@ private void ApplyVisual(int index)
     }
 
     // Init stats, если нужно
-    GetComponent<CharController>()?.InitStats(visualOptions[index]);
+    GetComponent<MouseMoveController>()?.InitStats(VisualOptions[index]);
+    
+
 }
 }

@@ -15,7 +15,6 @@ public class NameInputUI : MonoBehaviour
         _targetPlayer = player;
         gameObject.SetActive(true);
 
-       //nameInput.text = "Player" + Random.Range(1000, 9999);
         confirmButton.onClick.RemoveAllListeners();
         confirmButton.onClick.AddListener(OnConfirmClicked);
     }
@@ -34,8 +33,6 @@ public class NameInputUI : MonoBehaviour
             _targetPlayer.SetName(playerName);
         }
 
-
-        // Опционально: сохраняем в PlayerPrefs для следующего раза
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.Save();
     }

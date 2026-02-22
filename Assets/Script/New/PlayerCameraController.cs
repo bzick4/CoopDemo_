@@ -60,7 +60,6 @@ public class PlayerCameraController : NetworkBehaviour
     [SerializeField] private bool rotateCharacterToCamera = true;   // включить/выключить поворот
     [SerializeField] private float rotationSpeed = 720f;            // градусы в секунду (чем выше — тем резче)
 
-    //private CinemachineVirtualCamera _camInstance;             // ← правильный тип
     public CinemachineCamera CamInstance { get; private set; }  // публичное свойство для доступа из других классов (например, CharController);
 
     public override void OnNetworkSpawn()
@@ -107,7 +106,7 @@ public class PlayerCameraController : NetworkBehaviour
         if (!IsLocalPlayer || CamInstance == null || !rotateCharacterToCamera)
             return;
 
-        RotateToCamera();
+        //RotateToCamera();
     }
 
     private void RotateToCamera()
