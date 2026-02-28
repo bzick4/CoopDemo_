@@ -53,12 +53,16 @@ using Unity.Cinemachine; // ← правильно: Cinemachine, а не Unity.C
 public class PlayerCameraController : NetworkBehaviour
 {
     [Header("Camera")]
-    [SerializeField] private GameObject _cameraPrefab;          // префаб с CinemachineVirtualCamera
-    [SerializeField] private Transform _cameraTarget;           // точка, за которой следует камера (обычно над головой)
+    [SerializeField] private GameObject _cameraPrefab;
+    [SerializeField] private Transform _cameraTarget;
+
+    [Header("TypeCamera")]
+    private CinemachineCamera _TPS;
+    private CinemachineCamera _RTS;
 
     [Header("Rotation")]
-    [SerializeField] private bool rotateCharacterToCamera = true;   // включить/выключить поворот
-    [SerializeField] private float rotationSpeed = 720f;            // градусы в секунду (чем выше — тем резче)
+    [SerializeField] private bool rotateCharacterToCamera = true;
+    [SerializeField] private float rotationSpeed = 720f;
 
     public CinemachineCamera CamInstance { get; private set; }  // публичное свойство для доступа из других классов (например, CharController);
 
@@ -67,10 +71,9 @@ public class PlayerCameraController : NetworkBehaviour
         if (!IsLocalPlayer)
             return;
 
-        // Создаём локальную камеру только для владельца
         GameObject camGO = Instantiate(_cameraPrefab);
-        //_camInstance = camGO.GetComponent<CinemachineVirtualCamera>();
         CamInstance = camGO.GetComponent<CinemachineCamera>();
+       CamInstance.Priority = 50;
 
         if (CamInstance == null)
         {
@@ -80,7 +83,7 @@ public class PlayerCameraController : NetworkBehaviour
 
         CamInstance.Follow = _cameraTarget;
         CamInstance.LookAt = _cameraTarget;
-        CamInstance.Priority = 100;
+        CamInstance.Priority= 50;
 
         Debug.Log($"[CAMERA] Локальная камера создана для игрока {OwnerClientId}");
     }
@@ -99,17 +102,13 @@ public class PlayerCameraController : NetworkBehaviour
 
     private void LateUpdate()
     {
-        // Поворачиваем персонажа только если:
-        // 1. Это локальный игрок
-        // 2. Камера существует
-        // 3. Функция поворота включена
         if (!IsLocalPlayer || CamInstance == null || !rotateCharacterToCamera)
             return;
 
         //RotateToCamera();
     }
 
-    private void RotateToCamera()
+    public void RotateToCamera()
     {
         // Берём направление "вперёд" от камеры
         Vector3 camForward = CamInstance.transform.forward;
